@@ -94,6 +94,19 @@ rewrite of the detection/geolocation/weather/holiday logic.
   dictionary defines it, falling back to the generic template otherwise (no
   page defines specific holiday text yet, so behavior is unchanged today —
   it's just wired correctly for the next page that adds them).
+- **Post-Phase-4 — expanded holidays + weather icons** (done): `holidays.js`
+  expanded from 8 single-date entries to a full recurring calendar (49 dates,
+  27 unique `i18nKey`s across 8 countries, with 5 `holiday_common_*` keys
+  shared across countries so the same greeting isn't translated per country).
+  Added `src/config/holiday-i18n.js` — those 27 keys translated once, in all
+  7 languages, for the whole project (not duplicated per page); each page's
+  holiday banner now resolves page dictionary → this shared dictionary →
+  generic template, so both demos show the correct holiday-specific greeting
+  with no page-level changes. Also closed a real gap: `weather-themes.js` had
+  carried an `icon` field on every entry since Phase 2, but no page's widget
+  ever rendered it. Added `src/config/weather-icons.js` (inline SVG, one per
+  `icon` key, `currentColor`-based so it inherits each page's own accent
+  color) and wired it into both demos' weather widget.
 
 ## External services used (both free, no API key)
 
@@ -131,6 +144,8 @@ src/
     weather-themes.js       # codeKey -> {labelKey, icon, palette} (Phase 2)
     country-themes.js       # countryCode -> {languageCode, nationalPalette} (Phase 2)
     holidays.js              # countryCode -> [{month, day, i18nKey}] (Phase 2)
+    holiday-i18n.js          # shared holiday-greeting translations, 7 languages, written once for the whole project
+    weather-icons.js         # codeKey's `icon` -> inline SVG glyph (currentColor)
     example-page.config.js  # example of a per-page adaptation config (Phase 1)
 docs/
   ARCHITECTURE.md            # design notes for the core/per-page split
