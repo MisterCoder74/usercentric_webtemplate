@@ -74,10 +74,26 @@ rewrite of the detection/geolocation/weather/holiday logic.
   a real gap: before this, RO/IT/PL/DE visitors were detected correctly but
   silently fell back to English because no dictionary entry existed for their
   language.
-- **Phase 4 — Privacy & QA** (next): harden the consent prompt copy/placement,
-  test across multiple countries/weather conditions with mocked profiles,
-  check API call performance stays lazy/non-blocking, and review the widget/
-  banner for accessibility (contrast, screen readers, keyboard dismissal).
+- **Phase 4 — Privacy & QA** (done): consent prompt now shows a short
+  reassurance note ("the site works fine without this — only used for local
+  weather") next to the ask, in all 7 languages; focus moves to the prompt
+  when it appears and returns to the page on close; Escape dismisses the
+  consent prompt and the holiday banner without recording a decision (same
+  as ignoring it — re-asked next visit); the widget temperature color was
+  darkened from `--primary` to a lighter shade for AA contrast on the dark
+  card background; visible-focus outlines added to prompt/banner buttons.
+  Ran a mocked profile matrix (9 countries × 5 weather codes × 8 real
+  holiday dates) through the config datasets to confirm mappings resolve
+  correctly with no network calls — all passed. Confirmed API calls
+  (IP/geolocation/weather) only fire after `DOMContentLoaded` and only once
+  consent is resolved, so they never block first paint. Also fixed a real
+  bug this QA pass surfaced: `holidays.js` defines a per-holiday `i18nKey`
+  (e.g. `holiday_us_independence_day`) that `integration.js` was silently
+  ignoring — every holiday showed the same generic banner text regardless of
+  which holiday it was. The banner now uses the specific key when a page
+  dictionary defines it, falling back to the generic template otherwise (no
+  page defines specific holiday text yet, so behavior is unchanged today —
+  it's just wired correctly for the next page that adds them).
 
 ## External services used (both free, no API key)
 

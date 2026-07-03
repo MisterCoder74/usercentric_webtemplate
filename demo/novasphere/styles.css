@@ -85,7 +85,7 @@ html, body { margin: 0; padding: 0; color: var(--text); background: var(--bg); f
 .context-widget-row { margin: .15rem 0; }
 .context-widget-title { color: var(--muted); font-size: .75rem; text-transform: uppercase; letter-spacing: .04em; }
 .context-widget-main { display: flex; align-items: baseline; gap: .5rem; }
-.context-widget-temp { font-weight: 800; font-size: 1.2rem; color: var(--primary); }
+.context-widget-temp { font-weight: 800; font-size: 1.2rem; color: #9d6cf5; } /* lighter than --primary for AA contrast on dark card */
 .context-widget-desc { color: #e5e7eb; }
 .context-widget-time { color: var(--muted); font-size: .75rem; }
 
@@ -118,8 +118,11 @@ html, body { margin: 0; padding: 0; color: var(--text); background: var(--bg); f
   font-size: .85rem;
 }
 .geo-consent-prompt p { margin: 0 0 .75rem; color: #e5e7eb; }
+.geo-consent-note { font-size: .75rem !important; color: var(--muted) !important; }
 .geo-consent-actions { display: flex; gap: .5rem; }
 .geo-consent-actions .btn { padding: .5rem .9rem; font-size: .8rem; }
+.geo-consent-actions .btn:focus-visible,
+.holiday-banner-close:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
 
 @media (max-width: 480px) {
   .context-widget, .geo-consent-prompt { left: .75rem; right: .75rem; max-width: none; }

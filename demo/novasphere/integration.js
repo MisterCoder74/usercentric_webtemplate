@@ -101,11 +101,23 @@ function maybeShowHolidayBanner(profile, lang) {
     banner.setAttribute('role', 'status');
     document.body.prepend(banner);
   }
-  const message = t('holiday_banner_template', lang).replace('{country}', profile.country || '');
+  // Prefer a holiday-specific message (holiday.i18nKey) if the page dictionary
+  // defines one; otherwise fall back to the generic template. Today no page
+  // dictionary defines per-holiday keys, so this always falls back — but it's
+  // wired correctly for any page that adds them later (t() returns the key
+  // itself, unchanged, when a translation is missing).
+  const specific = t(holiday.i18nKey, lang);
+  const message = specific !== holiday.i18nKey
+    ? specific
+    : t('holiday_banner_template', lang).replace('{country}', profile.country || '');
   banner.innerHTML = `<span>${message}</span><button aria-label="Dismiss" class="holiday-banner-close">&times;</button>`;
   banner.hidden = false;
-  banner.querySelector('.holiday-banner-close')?.addEventListener('click', () => {
-    banner.hidden = true;
+  const dismiss = () => { banner.hidden = true; };
+  banner.querySelector('.holiday-banner-close')?.addEventListener('click', dismiss);
+  document.addEventListener('keydown', function onKeydown(e) {
+    if (e.key !== 'Escape' || banner.hidden) return;
+    dismiss();
+    document.removeEventListener('keydown', onKeydown);
   });
 }
 
@@ -113,26 +125,45 @@ function showGeoConsentPrompt(lang, onDone) {
   if (engine.getGeoConsentState()) { onDone(); return; } // already asked
   if (typeof navigator === 'undefined' || !navigator.geolocation) { onDone(); return; }
 
+  const previouslyFocused = document.activeElement;
   const prompt = document.createElement('div');
   prompt.id = 'geoConsentPrompt';
   prompt.className = 'geo-consent-prompt';
   prompt.setAttribute('role', 'dialog');
+  prompt.setAttribute('aria-labelledby', 'geoConsentPromptText');
+  prompt.setAttribute('aria-describedby', 'geoConsentPromptNote');
   prompt.innerHTML = `
-    <p>${t('geo_consent_prompt', lang)}</p>
+    <p id="geoConsentPromptText">${t('geo_consent_prompt', lang)}</p>
+    <p id="geoConsentPromptNote" class="geo-consent-note">${t('geo_consent_note', lang)}</p>
     <div class="geo-consent-actions">
       <button class="btn btn-primary" data-action="allow">${t('geo_consent_allow', lang)}</button>
       <button class="btn btn-ghost" data-action="deny">${t('geo_consent_deny', lang)}</button>
     </div>
   `;
   document.body.appendChild(prompt);
+
+  const close = () => {
+    prompt.remove();
+    document.removeEventListener('keydown', onKeydown);
+    if (previouslyFocused instanceof HTMLElement) previouslyFocused.focus();
+  };
+  const onKeydown = (e) => {
+    if (e.key !== 'Escape') return;
+    close();
+    onDone(); // dismissed without an answer — re-asked next visit, same as ignoring it
+  };
+  document.addEventListener('keydown', onKeydown);
+
   prompt.addEventListener('click', (e) => {
     const action = e.target?.dataset?.action;
     if (!action) return;
     if (action === 'allow') engine.grantGeoConsent();
     if (action === 'deny') engine.denyGeoConsent();
-    prompt.remove();
+    close();
     onDone();
   });
+
+  prompt.querySelector('[data-action="allow"]')?.focus();
 }
 
 async function run() {
