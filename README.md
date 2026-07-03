@@ -102,6 +102,13 @@ rewrite of the detection/geolocation/weather/holiday logic.
 | ipapi.co | IP-based geolocation (fallback) | `https://ipapi.co/json/` |
 | Open-Meteo | Current weather from coordinates | `https://api.open-meteo.com/v1/forecast` |
 
+## Using this on a different site
+
+See `docs/DEVELOPER_GUIDE.md` — requirements, what to copy vs. rewrite when
+porting the engine to a new landing page, and how to add new
+location/weather-driven effects (new weather themes, new countries, new
+holidays, or an entirely new profile dimension).
+
 ## Repository structure
 
 ```
@@ -121,6 +128,7 @@ src/
     example-page.config.js  # example of a per-page adaptation config (Phase 1)
 docs/
   ARCHITECTURE.md            # design notes for the core/per-page split
+  DEVELOPER_GUIDE.md         # how to port this engine to a new site + add new effects
 ```
 
 ### NovaSphere demo — draft polish pass
