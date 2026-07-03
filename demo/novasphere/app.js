@@ -1,9 +1,9 @@
-// app.js — NovaSphere demo i18n scaffold (Phase 3 integration target)
+// app.js — NovaSphere demo i18n scaffold, now wired to the context engine (Phase 3).
 //
-// Kept intentionally simple (manual language switcher, static dictionary) —
-// this is the surface Phase 3 will extend to auto-select the language from
-// the visitor's detected country (src/config/country-themes.js) while still
-// letting the user override it here.
+// The dictionary also carries weather/holiday label translations so
+// integration.js can render them without a second i18n system. Manual
+// language changes always win over auto-detection — see `manualOverride`
+// and `setLanguageFromContext` below, which integration.js calls.
 (() => {
   const translations = {
     en: {
@@ -46,7 +46,27 @@
       footer_link_terms: "Terms",
       footer_link_contact: "Contact",
       footer_rights: "All rights reserved.",
-      year: "" // will be replaced by current year
+      year: "", // will be replaced by current year
+      // Weather labels (keyed to context-engine.js WEATHER_CODES / weather-themes.js labelKey)
+      weather_clear: "Clear sky", weather_mostly_clear: "Mostly clear", weather_partly_cloudy: "Partly cloudy",
+      weather_cloudy: "Cloudy", weather_fog: "Fog", weather_fog_rime: "Rime fog",
+      weather_drizzle_light: "Light drizzle", weather_drizzle_moderate: "Drizzle", weather_drizzle_dense: "Dense drizzle",
+      weather_freezing_drizzle_light: "Light freezing drizzle", weather_freezing_drizzle_dense: "Freezing drizzle",
+      weather_rain_light: "Light rain", weather_rain_moderate: "Rain", weather_rain_heavy: "Heavy rain",
+      weather_freezing_rain_light: "Light freezing rain", weather_freezing_rain_heavy: "Freezing rain",
+      weather_snow_light: "Light snow", weather_snow_moderate: "Snow", weather_snow_heavy: "Heavy snow",
+      weather_snow_grains: "Snow grains", weather_rain_showers_light: "Light showers",
+      weather_rain_showers_moderate: "Showers", weather_rain_showers_violent: "Violent showers",
+      weather_snow_showers_light: "Light snow showers", weather_snow_showers_heavy: "Heavy snow showers",
+      weather_thunderstorm: "Thunderstorm", weather_thunderstorm_hail_light: "Thunderstorm with light hail",
+      weather_thunderstorm_hail_heavy: "Thunderstorm with heavy hail", weather_unknown: "Weather unavailable",
+      // Widget & holiday banner
+      widget_weather_label: "Right now in {city}",
+      widget_updated_label: "Updated",
+      holiday_banner_template: "Happy holiday! Today is a public holiday in {country}.",
+      geo_consent_prompt: "Allow precise location for more accurate local weather?",
+      geo_consent_allow: "Allow",
+      geo_consent_deny: "No thanks",
     },
     es: {
       nav_features: "Funciones",
@@ -88,7 +108,25 @@
       footer_link_terms: "Términos",
       footer_link_contact: "Contacto",
       footer_rights: "Todos los derechos reservados.",
-      year: ""
+      year: "",
+      weather_clear: "Cielo despejado", weather_mostly_clear: "Mayormente despejado", weather_partly_cloudy: "Parcialmente nublado",
+      weather_cloudy: "Nublado", weather_fog: "Niebla", weather_fog_rime: "Niebla helada",
+      weather_drizzle_light: "Llovizna ligera", weather_drizzle_moderate: "Llovizna", weather_drizzle_dense: "Llovizna densa",
+      weather_freezing_drizzle_light: "Llovizna helada ligera", weather_freezing_drizzle_dense: "Llovizna helada",
+      weather_rain_light: "Lluvia ligera", weather_rain_moderate: "Lluvia", weather_rain_heavy: "Lluvia intensa",
+      weather_freezing_rain_light: "Lluvia helada ligera", weather_freezing_rain_heavy: "Lluvia helada",
+      weather_snow_light: "Nieve ligera", weather_snow_moderate: "Nieve", weather_snow_heavy: "Nieve intensa",
+      weather_snow_grains: "Granos de nieve", weather_rain_showers_light: "Chubascos ligeros",
+      weather_rain_showers_moderate: "Chubascos", weather_rain_showers_violent: "Chubascos violentos",
+      weather_snow_showers_light: "Chubascos de nieve ligeros", weather_snow_showers_heavy: "Chubascos de nieve intensos",
+      weather_thunderstorm: "Tormenta", weather_thunderstorm_hail_light: "Tormenta con granizo ligero",
+      weather_thunderstorm_hail_heavy: "Tormenta con granizo intenso", weather_unknown: "Clima no disponible",
+      widget_weather_label: "Ahora mismo en {city}",
+      widget_updated_label: "Actualizado",
+      holiday_banner_template: "¡Feliz día festivo! Hoy es festivo nacional en {country}.",
+      geo_consent_prompt: "¿Permitir ubicación precisa para un clima local más exacto?",
+      geo_consent_allow: "Permitir",
+      geo_consent_deny: "No, gracias",
     },
     fr: {
       nav_features: "Fonctionnalités",
@@ -130,14 +168,36 @@
       footer_link_terms: "Conditions",
       footer_link_contact: "Contact",
       footer_rights: "Tous droits réservés.",
-      year: ""
+      year: "",
+      weather_clear: "Ciel dégagé", weather_mostly_clear: "Plutôt dégagé", weather_partly_cloudy: "Partiellement nuageux",
+      weather_cloudy: "Nuageux", weather_fog: "Brouillard", weather_fog_rime: "Brouillard givrant",
+      weather_drizzle_light: "Bruine légère", weather_drizzle_moderate: "Bruine", weather_drizzle_dense: "Bruine dense",
+      weather_freezing_drizzle_light: "Bruine verglaçante légère", weather_freezing_drizzle_dense: "Bruine verglaçante",
+      weather_rain_light: "Pluie légère", weather_rain_moderate: "Pluie", weather_rain_heavy: "Forte pluie",
+      weather_freezing_rain_light: "Pluie verglaçante légère", weather_freezing_rain_heavy: "Pluie verglaçante",
+      weather_snow_light: "Neige légère", weather_snow_moderate: "Neige", weather_snow_heavy: "Forte neige",
+      weather_snow_grains: "Grains de neige", weather_rain_showers_light: "Averses légères",
+      weather_rain_showers_moderate: "Averses", weather_rain_showers_violent: "Averses violentes",
+      weather_snow_showers_light: "Averses de neige légères", weather_snow_showers_heavy: "Averses de neige fortes",
+      weather_thunderstorm: "Orage", weather_thunderstorm_hail_light: "Orage avec grêle légère",
+      weather_thunderstorm_hail_heavy: "Orage avec forte grêle", weather_unknown: "Météo indisponible",
+      widget_weather_label: "En ce moment à {city}",
+      widget_updated_label: "Mis à jour",
+      holiday_banner_template: "Joyeuse fête ! Aujourd'hui est un jour férié en {country}.",
+      geo_consent_prompt: "Autoriser la localisation précise pour une météo locale plus juste ?",
+      geo_consent_allow: "Autoriser",
+      geo_consent_deny: "Non merci",
     }
     // Additional languages can be added here
   };
   const defaultLang = 'en';
   let currentLang = (navigator.language || navigator.userLanguage || 'en').split('-')[0];
   if (!translations[currentLang]) currentLang = defaultLang;
+  let manualOverride = false;
+  let langSelectEl = null;
+
   function localize(lang) {
+    if (!translations[lang]) return;
     currentLang = lang;
     const dict = translations[lang] || translations[defaultLang];
     document.querySelectorAll('[data-i18n]').forEach(el => {
@@ -150,15 +210,31 @@
     const yearEl = document.querySelector('[data-i18n="year"]');
     if (yearEl) yearEl.textContent = new Date().getFullYear();
   }
+
   document.addEventListener('DOMContentLoaded', () => {
     localize(currentLang);
-    const langSelect = document.getElementById('langSelect');
-    if (langSelect) {
-      langSelect.value = currentLang in translations ? currentLang : 'en';
-      langSelect.addEventListener('change', (e) => {
-        const lang = e.target.value;
-        localize(lang);
+    langSelectEl = document.getElementById('langSelect');
+    if (langSelectEl) {
+      langSelectEl.value = currentLang in translations ? currentLang : 'en';
+      langSelectEl.addEventListener('change', (e) => {
+        manualOverride = true; // a manual pick always wins over context-based detection
+        localize(e.target.value);
       });
     }
   });
+
+  // Bridge used by integration.js (Phase 3 context wiring). A manual language
+  // pick always wins — this only applies the detected language pre-emptively.
+  window.NovaSphereI18n = {
+    localize,
+    getCurrentLang: () => currentLang,
+    getDict: (lang) => translations[lang] || translations[defaultLang],
+    isManualOverride: () => manualOverride,
+    setLanguageFromContext(lang) {
+      if (manualOverride || !translations[lang]) return false;
+      localize(lang);
+      if (langSelectEl) langSelectEl.value = lang;
+      return true;
+    },
+  };
 })();

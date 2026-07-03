@@ -61,3 +61,66 @@ html, body { margin: 0; padding: 0; color: var(--text); background: var(--bg); f
   .header-inner { padding: 12px 0; }
   .footer-inner { flex-direction: column; text-align: center; }
 }
+
+/* --- Phase 3: context engine integration --- */
+
+/* Thin national-color accent bar, shown once the visitor's country is known. */
+.national-accent-bar { height: 4px; width: 100%; }
+
+/* Floating widget: visitor's local place / time / weather. */
+.context-widget {
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 40;
+  background: rgba(17, 20, 40, .92);
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 12px;
+  padding: .85rem 1rem;
+  box-shadow: var(--shadow);
+  font-size: .85rem;
+  max-width: 220px;
+  backdrop-filter: blur(4px);
+}
+.context-widget-row { margin: .15rem 0; }
+.context-widget-title { color: var(--muted); font-size: .75rem; text-transform: uppercase; letter-spacing: .04em; }
+.context-widget-main { display: flex; align-items: baseline; gap: .5rem; }
+.context-widget-temp { font-weight: 800; font-size: 1.2rem; color: var(--primary); }
+.context-widget-desc { color: #e5e7eb; }
+.context-widget-time { color: var(--muted); font-size: .75rem; }
+
+/* Holiday banner — dismissible strip at the very top of the page. */
+.holiday-banner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  background: var(--primary);
+  color: #fff;
+  padding: .6rem 1rem;
+  font-size: .9rem;
+  text-align: center;
+}
+.holiday-banner-close { background: transparent; border: 0; color: #fff; font-size: 1.1rem; cursor: pointer; line-height: 1; }
+
+/* Geolocation consent prompt — small, non-blocking, dismissible. */
+.geo-consent-prompt {
+  position: fixed;
+  left: 1rem;
+  bottom: 1rem;
+  z-index: 41;
+  max-width: 320px;
+  background: var(--card);
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: var(--shadow);
+  font-size: .85rem;
+}
+.geo-consent-prompt p { margin: 0 0 .75rem; color: #e5e7eb; }
+.geo-consent-actions { display: flex; gap: .5rem; }
+.geo-consent-actions .btn { padding: .5rem .9rem; font-size: .8rem; }
+
+@media (max-width: 480px) {
+  .context-widget, .geo-consent-prompt { left: .75rem; right: .75rem; max-width: none; }
+}

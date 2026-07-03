@@ -59,14 +59,19 @@ rewrite of the detection/geolocation/weather/holiday logic.
   (`codeKey`, ISO country code) rather than hardcoded display text, so
   translated strings stay centralized in the per-page i18n dictionary
   (Phase 3), not duplicated across datasets.
-- **Phase 3 — Template integration** (next): extend the i18n-scaffolded landing
-  page so the language switcher auto-selects from detected country (still
-  user-overridable), CSS theme variables are overridden dynamically from
-  weather/country, a widget shows location/date/time/weather, and a
-  toast/banner shows holiday messages when the date matches. This is where
-  the "NovaSphere" demo landing page becomes the real integration target.
-- **Phase 4 — Privacy & QA**: explicit consent banner before requesting geolocation,
-  multi-country/multi-weather testing, API call performance (lazy/non-blocking).
+- **Phase 3 — Template integration** (done): `demo/novasphere/integration.js`
+  wires the Phase 1 engine + Phase 2 datasets into the demo page — language
+  auto-selects from the detected country (a manual pick in the switcher
+  always wins), CSS theme variables update from the weather theme, a
+  non-blocking consent prompt gates precise geolocation (IP-based context
+  works either way), a floating widget shows city/local time/weather, a
+  dismissible banner shows a holiday message when the visitor's local date
+  matches their country's calendar, and a thin national-color accent bar
+  reflects the detected country.
+- **Phase 4 — Privacy & QA** (next): harden the consent prompt copy/placement,
+  test across multiple countries/weather conditions with mocked profiles,
+  check API call performance stays lazy/non-blocking, and review the widget/
+  banner for accessibility (contrast, screen readers, keyboard dismissal).
 
 ## External services used (both free, no API key)
 
@@ -80,9 +85,10 @@ rewrite of the detection/geolocation/weather/holiday logic.
 ```
 demo/
   novasphere/
-    index.html              # NovaSphere demo landing page — Phase 3 integration target
-    styles.css               # polished copy/layout pass over the original draft
-    app.js                   # i18n scaffold (en/es/fr), still a manual language switcher
+    index.html              # NovaSphere demo landing page — engine wired in (Phase 3)
+    styles.css               # polished layout + widget/banner/consent-prompt styles
+    app.js                   # i18n dictionary (en/es/fr) + bridge consumed by integration.js
+    integration.js           # Phase 3: wires context-engine.js + config datasets into the page
 src/
   core/
     context-engine.js       # visitor context collection + consent + storage (Phase 1)
