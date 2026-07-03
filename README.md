@@ -68,6 +68,12 @@ rewrite of the detection/geolocation/weather/holiday logic.
   dismissible banner shows a holiday message when the visitor's local date
   matches their country's calendar, and a thin national-color accent bar
   reflects the detected country.
+- **Phase 3.5 — Full localization** (done): `demo/novasphere/app.js` dictionary
+  extended from EN/ES/FR to all 8 countries `country-themes.js` detects — added
+  IT, RO, PL, DE (also added as manual options in the language switcher). Closes
+  a real gap: before this, RO/IT/PL/DE visitors were detected correctly but
+  silently fell back to English because no dictionary entry existed for their
+  language.
 - **Phase 4 — Privacy & QA** (next): harden the consent prompt copy/placement,
   test across multiple countries/weather conditions with mocked profiles,
   check API call performance stays lazy/non-blocking, and review the widget/
@@ -87,7 +93,7 @@ demo/
   novasphere/
     index.html              # NovaSphere demo landing page — engine wired in (Phase 3)
     styles.css               # polished layout + widget/banner/consent-prompt styles
-    app.js                   # i18n dictionary (en/es/fr) + bridge consumed by integration.js
+    app.js                   # i18n dictionary (en/es/fr/it/ro/pl/de) + bridge consumed by integration.js
     integration.js           # Phase 3: wires context-engine.js + config datasets into the page
 src/
   core/
