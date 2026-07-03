@@ -1,11 +1,16 @@
-<!-- index.html — NovaSphere demo landing page (Phase 3 integration target) -->
+<!-- index.php — NovaSphere demo landing page (Phase 3 integration target) -->
+<!-- Renamed from index.html so the PHP cache-busting tag below actually executes
+     server-side instead of being served as literal text. This is the ONLY PHP
+     in the project — everything else (contact forms, all interactivity) stays
+     client-side JS as before; see README "No backend" note. -->
+
 <!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>NovaSphere - Modern SaaS Landing</title>
-  <link rel="stylesheet" href="styles.css?v=1.1.0">
+  <link rel="stylesheet" href="styles.css?v=<?php echo time(); ?>">
 </head>
 <body>
   <div id="nationalAccentBar" class="national-accent-bar" hidden aria-hidden="true"></div>
@@ -121,7 +126,7 @@
       <p class="footer-copy">&copy; <span data-i18n="year"></span> NovaSphere. <span data-i18n="footer_rights">All rights reserved.</span></p>
     </div>
   </footer>
-  <script src="app.js?v=1.1.0"></script>
-  <script type="module" src="integration.js?v=1.0.0"></script>
+  <script src="app.js?v=<?php echo time(); ?>"></script>
+  <script type="module" src="integration.js?v=<?php echo time(); ?>"></script>
 </body>
 </html>

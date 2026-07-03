@@ -14,11 +14,20 @@ practical how-to.
 - **Browser support**: anything with `fetch`, `Promise`, ES modules, and
   `Intl.DateTimeFormat` — i.e. any browser from the last ~6 years. No polyfills
   ship with the engine.
-- **No API keys, no backend.** Both external services are free and keyless:
+- **No API keys, no backend for the engine itself.** Both external services
+  are free and keyless:
   - `ipapi.co` — IP → city/region/country/coordinates
   - `Open-Meteo` — coordinates → current weather
   Rate limits are generous for a landing page but are the caller's
   responsibility to monitor if traffic is high (see ipapi.co's free-tier docs).
+- **PHP-capable hosting, for cache-busting only.** Both reference demos use
+  `<?php echo time(); ?>` as the `?v=` query string on their `<link>`/`<script>`
+  tags so every deploy busts the cache automatically — no version number to
+  remember to bump. This means both demos ship as `index.php`, not
+  `index.html` (a `.html` file never executes PHP). This is the one narrow,
+  deliberate exception to "no backend": if your site's host is pure static
+  (no PHP), replace the `<?php echo time(); ?>` tags with a build-time
+  timestamp your deploy script injects instead — same effect, zero PHP.
 - **A consent UI.** The engine never requests geolocation on its own — your
   page must show a prompt and call `engine.grantGeoConsent()` /
   `engine.denyGeoConsent()`. Copy the pattern in `demo/novasphere/integration.js`

@@ -127,12 +127,12 @@ holidays, or an entirely new profile dimension).
 ```
 demo/
   novasphere/
-    index.html              # NovaSphere demo landing page — engine wired in (Phase 3)
+    index.php                # NovaSphere demo landing page — engine wired in (Phase 3)
     styles.css               # polished layout + widget/banner/consent-prompt styles
     app.js                   # i18n dictionary (en/es/fr/it/ro/pl/de) + bridge consumed by integration.js
     integration.js           # Phase 3: wires context-engine.js + config datasets into the page
   nayla-nails/
-    index.html              # Nayla Nails demo — a second, unrelated landing page (home-service nail artist)
+    index.php                # Nayla Nails demo — a second, unrelated landing page (home-service nail artist)
     styles.css               # bold/dark/glitter theme, distinct from NovaSphere, same shared component classes
     app.js                   # i18n dictionary (en/es/fr/it/ro/pl/de) — structural copy only; testimonials stay Italian
     integration.js           # same engine wiring pattern as NovaSphere, plus a no-backend mailto contact form
@@ -190,7 +190,27 @@ porting steps the guide describes, applied for real instead of only documented.
   of the i18n dictionary — real client quotes on a real local-business site
   wouldn't be machine-translated either. This is the Developer Guide's point
   that a page only has to declare the i18n keys it actually wants translated.
-- **No backend, as required**: the contact form has no PHP/server target — on
-  submit, client-side JS builds a `mailto:` link from the entered fields and
-  hands off to the visitor's own email client. Nothing is transmitted or
-  stored by the page itself.
+- **No backend for interactivity, as required**: the contact form has no
+  PHP/server target — on submit, client-side JS builds a `mailto:` link from
+  the entered fields and hands off to the visitor's own email client. Nothing
+  is transmitted or stored by the page itself. (See "Cache-busting" below for
+  the one deliberate, narrow exception to the no-backend rule.)
+
+## Cache-busting
+
+Both demos' `index.php` load `styles.css`, `app.js`, and `integration.js` with
+a `?v=<?php echo time(); ?>` query string instead of a fixed version number
+(`?v=1.1.0`). Every request gets a fresh timestamp, so browsers never serve a
+stale cached asset after a deploy — no manual version bump to remember, no
+risk of forgetting to bump it.
+
+This is the **only** PHP in the project, and it's why both pages are
+`index.php` rather than `index.html`: PHP only executes when the server
+actually parses the file as PHP, so a plain `.html` file would print the tag
+literally as text instead of running it. Everything else — all
+interactivity, the Nayla contact form, all data fetching — remains
+client-side JS exactly as before; this doesn't reopen the door to a general
+backend. The practical implication: hosting for both demos needs a
+PHP-capable server (Apache/Nginx + PHP-FPM, or platforms like standard
+shared/VPS PHP hosting) — a purely static host (e.g. GitHub Pages as-is)
+won't execute the `<?php ... ?>` tag.

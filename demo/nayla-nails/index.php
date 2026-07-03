@@ -1,6 +1,10 @@
-<!-- index.html — Nayla Nails demo: a second, unrelated landing page reusing the
+<!-- index.php — Nayla Nails demo: a second, unrelated landing page reusing the
      same adaptive visitor engine as demo/novasphere/, proving the core/per-page
      split works for a completely different business (local home-service nail
+     Renamed from index.html so the PHP cache-busting tag below actually executes
+     server-side instead of being served as literal text. This is the ONLY PHP
+     in the project — the contact form below stays a client-side mailto; see
+     README "No backend" note.
      artist vs. SaaS product). See docs/DEVELOPER_GUIDE.md for the porting steps
      this page follows. -->
 <!doctype html>
@@ -10,7 +14,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Nayla Nails — Nail Art a Domicilio nel Lazio</title>
   <meta name="description" content="Nayla Nails: nail artist a domicilio in tutto il Lazio, specializzata in gel e polvere glitter." />
-  <link rel="stylesheet" href="styles.css?v=1.0.0">
+  <link rel="stylesheet" href="styles.css?v=<?php echo time(); ?>">
 </head>
 <body>
   <div id="nationalAccentBar" class="national-accent-bar" hidden aria-hidden="true"></div>
@@ -201,7 +205,7 @@
     </div>
   </footer>
 
-  <script src="app.js?v=1.0.0"></script>
-  <script type="module" src="integration.js?v=1.0.0"></script>
+  <script src="app.js?v=<?php echo time(); ?>"></script>
+  <script type="module" src="integration.js?v=<?php echo time(); ?>"></script>
 </body>
 </html>
