@@ -118,6 +118,12 @@ demo/
     styles.css               # polished layout + widget/banner/consent-prompt styles
     app.js                   # i18n dictionary (en/es/fr/it/ro/pl/de) + bridge consumed by integration.js
     integration.js           # Phase 3: wires context-engine.js + config datasets into the page
+  nayla-nails/
+    index.html              # Nayla Nails demo — a second, unrelated landing page (home-service nail artist)
+    styles.css               # bold/dark/glitter theme, distinct from NovaSphere, same shared component classes
+    app.js                   # i18n dictionary (en/es/fr/it/ro/pl/de) — structural copy only; testimonials stay Italian
+    integration.js           # same engine wiring pattern as NovaSphere, plus a no-backend mailto contact form
+    assets/                  # 6 generated nail-art portfolio photos
 src/
   core/
     context-engine.js       # visitor context collection + consent + storage (Phase 1)
@@ -142,3 +148,34 @@ minimal footer (tagline + Pricing/Privacy/Terms/Contact links + copyright),
 and a completed French dictionary (the draft's language switcher offered
 French but had no translations for it). Structure and visual identity are
 unchanged from the draft — this is a copy/layout pass, not a rebuild.
+
+### Nayla Nails demo — second site, proving the engine is portable
+
+`demo/nayla-nails/` is a from-scratch landing page for a fictional home-service
+nail artist ("Nayla") working across the Lazio region of Italy, specialized in
+gel and glitter-powder nail art. It exists to prove out `docs/DEVELOPER_GUIDE.md`
+on a real second site: a completely different business, tone (bold/edgy vs.
+NovaSphere's corporate SaaS voice), and visual identity (dark/gold/glitter vs.
+NovaSphere's blue/purple), built by copying the reusable core
+(`src/core/context-engine.js`, `src/config/*.js`) unchanged and writing this
+page's own thin `integration.js`, i18n dictionary, and CSS — exactly the
+porting steps the guide describes, applied for real instead of only documented.
+
+- **Structure**: hero, about, a 4-item services grid, a 6-photo work portfolio
+  (generated nail-art images, not stock photos), 6 client testimonials, and a
+  contact section.
+- **Same personalization as NovaSphere**: i18n auto-detection across the same
+  7 languages, national accent bar, weather/time widget, holiday banner, and
+  the geo-consent prompt with its Phase 4 accessibility behavior (focus
+  management, Escape-to-dismiss, ARIA labeling) — all reused as-is per the
+  Developer Guide's advice, not rebuilt.
+- **One deliberate content choice**: the dictionary translates all structural
+  copy (nav, hero, services, section headers, contact form) into all 7
+  languages, but the 6 testimonials are hardcoded in Italian and are NOT part
+  of the i18n dictionary — real client quotes on a real local-business site
+  wouldn't be machine-translated either. This is the Developer Guide's point
+  that a page only has to declare the i18n keys it actually wants translated.
+- **No backend, as required**: the contact form has no PHP/server target — on
+  submit, client-side JS builds a `mailto:` link from the entered fields and
+  hands off to the visitor's own email client. Nothing is transmitted or
+  stored by the page itself.

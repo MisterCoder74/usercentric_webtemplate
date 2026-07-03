@@ -1,0 +1,207 @@
+<!-- index.html — Nayla Nails demo: a second, unrelated landing page reusing the
+     same adaptive visitor engine as demo/novasphere/, proving the core/per-page
+     split works for a completely different business (local home-service nail
+     artist vs. SaaS product). See docs/DEVELOPER_GUIDE.md for the porting steps
+     this page follows. -->
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Nayla Nails — Nail Art a Domicilio nel Lazio</title>
+  <meta name="description" content="Nayla Nails: nail artist a domicilio in tutto il Lazio, specializzata in gel e polvere glitter." />
+  <link rel="stylesheet" href="styles.css?v=1.0.0">
+</head>
+<body>
+  <div id="nationalAccentBar" class="national-accent-bar" hidden aria-hidden="true"></div>
+
+  <header class="site-header" aria-label="Main">
+    <div class="container header-inner">
+      <a href="#home" class="logo" aria-label="Nayla Nails">Nayla<span class="logo-dot">.</span></a>
+      <nav class="main-nav" aria-label="Primary">
+        <a href="#about" data-i18n="nav_about">Chi sono</a>
+        <a href="#services" data-i18n="nav_services">Servizi</a>
+        <a href="#portfolio" data-i18n="nav_portfolio">Lavori</a>
+        <a href="#testimonials" data-i18n="nav_testimonials">Recensioni</a>
+        <a href="#contact" data-i18n="nav_contact">Contatti</a>
+      </nav>
+      <div class="header-actions">
+        <div class="lang-switch" aria-label="Language switcher">
+          <select id="langSelect" aria-label="Language">
+            <option value="it" selected>Italiano</option>
+            <option value="en">English</option>
+            <option value="es">Español</option>
+            <option value="fr">Français</option>
+            <option value="ro">Română</option>
+            <option value="pl">Polski</option>
+            <option value="de">Deutsch</option>
+          </select>
+        </div>
+        <a href="#contact" class="btn btn-primary btn-small" data-i18n="nav_cta">Prenota</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="home" aria-label="Hero">
+      <div class="container hero-inner">
+        <p class="hero-eyebrow" data-i18n="hero_eyebrow">Nail Art a domicilio · Lazio</p>
+        <h1 class="hero-title" data-i18n="hero_title">Unghie che non chiedono permesso</h1>
+        <p class="hero-sub" data-i18n="hero_sub">Gel e polvere glitter, fatti su misura per chi non si accontenta del solito smalto. Vengo io, ovunque tu sia nel Lazio.</p>
+        <div class="hero-ctas">
+          <a href="#contact" class="btn btn-primary" data-i18n="hero_cta_primary">Prenota la tua seduta</a>
+          <a href="#portfolio" class="btn btn-ghost" data-i18n="hero_cta_secondary">Guarda i lavori</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="about" class="about" aria-label="Chi sono">
+      <div class="container about-inner">
+        <div class="about-portrait" aria-hidden="true">
+          <img src="./assets/nail-1.jpg" alt="" loading="lazy" />
+        </div>
+        <div class="about-copy">
+          <h2 class="section-title section-title-left" data-i18n="about_title">Non è solo smalto. È carattere.</h2>
+          <p data-i18n="about_text">Sono Nayla, nail artist a domicilio in tutto il Lazio. Niente saloni affollati, niente attese: porto la mia postazione professionale da te, con la stessa cura e gli stessi prodotti di un centro estetico di livello. Lavoro quasi esclusivamente in gel e polvere glitter, perché lo smalto classico, diciamocelo, non fa per chi vuole distinguersi.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="services" class="services" aria-label="Servizi">
+      <div class="container">
+        <h2 class="section-title" data-i18n="services_title">Cosa faccio</h2>
+        <p class="section-sub" data-i18n="services_sub">Ogni trattamento a domicilio, con materiali professionali e tempi di posa rispettati.</p>
+        <div class="services-grid" role="list">
+          <article class="service-card" role="listitem">
+            <span class="service-icon" aria-hidden="true">◆</span>
+            <h3 data-i18n="service_1_title">Ricostruzione in gel</h3>
+            <p data-i18n="service_1_desc">Struttura, lunghezza e forma su misura — dalla mandorla alla coffin, resistente e naturale al tatto.</p>
+          </article>
+          <article class="service-card" role="listitem">
+            <span class="service-icon" aria-hidden="true">✦</span>
+            <h3 data-i18n="service_2_title">Nail art in polvere glitter</h3>
+            <p data-i18n="service_2_desc">Effetti ombré, chrome e full glitter che il classico smalto non riesce a dare.</p>
+          </article>
+          <article class="service-card" role="listitem">
+            <span class="service-icon" aria-hidden="true">◇</span>
+            <h3 data-i18n="service_3_title">Semipermanente</h3>
+            <p data-i18n="service_3_desc">Per chi vuole colore pulito e brillante senza impegnarsi con il gel.</p>
+          </article>
+          <article class="service-card" role="listitem">
+            <span class="service-icon" aria-hidden="true">✧</span>
+            <h3 data-i18n="service_4_title">Rimozione sicura</h3>
+            <p data-i18n="service_4_desc">Rimuovo il vecchio lavoro (anche non mio) senza rovinare l'unghia naturale.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="portfolio" class="portfolio" aria-label="Lavori">
+      <div class="container">
+        <h2 class="section-title" data-i18n="portfolio_title">I miei lavori</h2>
+        <p class="section-sub" data-i18n="portfolio_sub">Una selezione di quello che esce dalla mia valigetta.</p>
+        <div class="portfolio-grid" role="list">
+          <figure class="portfolio-card" role="listitem">
+            <img src="./assets/nail-1.jpg" alt="" loading="lazy" />
+            <figcaption data-i18n="portfolio_1">Ombré Glitter Bordeaux</figcaption>
+          </figure>
+          <figure class="portfolio-card" role="listitem">
+            <img src="./assets/nail-2.jpg" alt="" loading="lazy" />
+            <figcaption data-i18n="portfolio_2">Black &amp; Gold Chrome</figcaption>
+          </figure>
+          <figure class="portfolio-card" role="listitem">
+            <img src="./assets/nail-3.jpg" alt="" loading="lazy" />
+            <figcaption data-i18n="portfolio_3">Stiletto Verde Smeraldo</figcaption>
+          </figure>
+          <figure class="portfolio-card" role="listitem">
+            <img src="./assets/nail-4.jpg" alt="" loading="lazy" />
+            <figcaption data-i18n="portfolio_4">Fade Argento Olografico</figcaption>
+          </figure>
+          <figure class="portfolio-card" role="listitem">
+            <img src="./assets/nail-5.jpg" alt="" loading="lazy" />
+            <figcaption data-i18n="portfolio_5">Prugna e Polvere Oro</figcaption>
+          </figure>
+          <figure class="portfolio-card" role="listitem">
+            <img src="./assets/nail-6.jpg" alt="" loading="lazy" />
+            <figcaption data-i18n="portfolio_6">French Nero Opaco e Oro</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimonials are real-style client quotes, intentionally hardcoded in
+         Italian (not part of the i18n dictionary) — same choice a real local
+         business site would make. See docs/DEVELOPER_GUIDE.md. -->
+    <section id="testimonials" class="testimonials" aria-label="Recensioni">
+      <div class="container">
+        <h2 class="section-title" data-i18n="testimonials_title">Cosa dicono di me</h2>
+        <p class="section-sub" data-i18n="testimonials_sub">Clienti vere, in tutto il Lazio.</p>
+        <div class="testimonials-grid" role="list">
+          <blockquote class="testimonial-card" role="listitem">
+            <p>"Sono passata dal salone sotto casa a Nayla e non torno più indietro. Il gel dura il triplo e il glitter non se ne va nemmeno lavando i piatti."</p>
+            <cite>— Giulia, Frosinone</cite>
+          </blockquote>
+          <blockquote class="testimonial-card" role="listitem">
+            <p>"Viene lei a casa mia con tutta l'attrezzatura, puntuale, precisa, e in due ore ho unghie che sembrano uscite da un salone di lusso a Roma centro."</p>
+            <cite>— Martina, Roma</cite>
+          </blockquote>
+          <blockquote class="testimonial-card" role="listitem">
+            <p>"Avevo paura del gel dopo un'esperienza pessima altrove. Nayla mi ha tolto tutto senza rovinarmi l'unghia naturale ed è ripartita da zero. Consigliatissima."</p>
+            <cite>— Chiara, Latina</cite>
+          </blockquote>
+          <blockquote class="testimonial-card" role="listitem">
+            <p>"Il chrome black&gold che mi ha fatto è diventato il mio biglietto da visita. Mi fermano per strada a chiedermi chi me le ha fatte."</p>
+            <cite>— Sara, Anzio</cite>
+          </blockquote>
+          <blockquote class="testimonial-card" role="listitem">
+            <p>"Zero tempo perso in salone, zero parcheggio impossibile. Nayla arriva, lavora benissimo e se ne va. Il servizio a domicilio nel Lazio che aspettavo."</p>
+            <cite>— Federica, Viterbo</cite>
+          </blockquote>
+          <blockquote class="testimonial-card" role="listitem">
+            <p>"Ho chiesto qualcosa fuori dal comune per il mio matrimonio e Nayla ha capito al volo cosa avevo in mente. Risultato pazzesco, fotografato da tutti."</p>
+            <cite>— Alessia, Rieti</cite>
+          </blockquote>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="contact" aria-label="Contatti">
+      <div class="container contact-inner">
+        <div class="contact-copy">
+          <h2 class="section-title section-title-left" data-i18n="contact_title">Parliamone</h2>
+          <p data-i18n="contact_sub">Scrivimi per un preventivo o per fissare la data — rispondo di persona.</p>
+        </div>
+        <form id="contactForm" class="contact-form" novalidate>
+          <label for="ctName" data-i18n="form_name">Nome</label>
+          <input id="ctName" name="name" type="text" required autocomplete="name" />
+
+          <label for="ctEmail" data-i18n="form_email">Email</label>
+          <input id="ctEmail" name="email" type="email" required autocomplete="email" />
+
+          <label for="ctMessage" data-i18n="form_message">Raccontami cosa hai in mente</label>
+          <textarea id="ctMessage" name="message" rows="4" required></textarea>
+
+          <button type="submit" class="btn btn-primary" data-i18n="form_submit">Invia richiesta</button>
+          <p class="form-note" data-i18n="form_note">Il modulo apre il tuo client email — nessun dato viene salvato su questo sito.</p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" aria-label="Footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <span class="logo" aria-label="Nayla Nails">Nayla<span class="logo-dot">.</span></span>
+        <p data-i18n="footer_tagline">Nail art a domicilio in tutto il Lazio.</p>
+      </div>
+      <nav class="footer-links" aria-label="Footer links">
+        <a href="#" data-i18n="footer_link_privacy">Privacy</a>
+      </nav>
+      <p class="footer-copy">&copy; <span data-i18n="year"></span> Nayla Nails. <span data-i18n="footer_rights">Tutti i diritti riservati.</span></p>
+    </div>
+  </footer>
+
+  <script src="app.js?v=1.0.0"></script>
+  <script type="module" src="integration.js?v=1.0.0"></script>
+</body>
+</html>
