@@ -7,8 +7,10 @@
 // client-side-only contact form (no backend — see handleContactForm below).
 import { ContextEngine } from '../../src/core/context-engine.js';
 import { getWeatherTheme } from '../../src/config/weather-themes.js';
+import { getWeatherIconSvg } from '../../src/config/weather-icons.js';
 import { getCountryTheme } from '../../src/config/country-themes.js';
 import { getTodaysHoliday } from '../../src/config/holidays.js';
+import { getHolidayTranslation } from '../../src/config/holiday-i18n.js';
 
 const engine = new ContextEngine();
 const CONTACT_EMAIL = 'ciao@naylanails.it'; // placeholder studio inbox
@@ -55,9 +57,11 @@ function renderWidget(profile, weatherTheme, lang) {
   const tempText = profile.weather?.temperature != null ? `${Math.round(profile.weather.temperature)}\u00B0C` : '';
   const desc = profile.weather ? t(weatherTheme.labelKey, lang) : t('weather_unknown', lang);
   const timeText = formatLocalTime(profile);
+  const iconSvg = profile.weather ? getWeatherIconSvg(weatherTheme.icon) : '';
   widget.innerHTML = `
     <div class="context-widget-row context-widget-title">${label}</div>
     <div class="context-widget-row context-widget-main">
+      ${iconSvg ? `<span class="context-widget-icon" aria-hidden="true">${iconSvg}</span>` : ''}
       <span class="context-widget-temp">${tempText}</span>
       <span class="context-widget-desc">${desc}</span>
     </div>
@@ -101,10 +105,15 @@ function maybeShowHolidayBanner(profile, lang) {
     banner.setAttribute('role', 'status');
     document.body.prepend(banner);
   }
-  const specific = t(holiday.i18nKey, lang);
-  const message = specific !== holiday.i18nKey
-    ? specific
-    : t('holiday_banner_template', lang).replace('{country}', profile.country || '');
+  // Resolution order: (1) this page's own dictionary, in case it ever wants
+  // a custom holiday message; (2) the shared project-wide holiday-i18n.js
+  // dictionary, which covers every key declared in holidays.js across all
+  // 7 languages; (3) the generic template as a last-resort safety net.
+  const pageSpecific = t(holiday.i18nKey, lang);
+  const shared = getHolidayTranslation(holiday.i18nKey, lang);
+  const message = pageSpecific !== holiday.i18nKey
+    ? pageSpecific
+    : shared ?? t('holiday_banner_template', lang).replace('{country}', profile.country || '');
   banner.innerHTML = `<span>${message}</span><button aria-label="Dismiss" class="holiday-banner-close">&times;</button>`;
   banner.hidden = false;
   const dismiss = () => { banner.hidden = true; };

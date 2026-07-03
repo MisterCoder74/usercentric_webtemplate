@@ -33,6 +33,8 @@ practical how-to.
 | `src/config/weather-themes.js` | Yes, unless you want different weather palettes | Central weather → theme/label map |
 | `src/config/country-themes.js` | Yes, extend if you need more countries | Central country → language/flag-accent map |
 | `src/config/holidays.js` | Yes, extend per country as needed | Central holiday calendar |
+| `src/config/holiday-i18n.js` | Yes, unchanged (extend when you add a holiday key) | Shared translations (7 languages) for every `holidays.js` `i18nKey` — written once for the whole project, not per page |
+| `src/config/weather-icons.js` | Yes, unchanged (extend when you add a weather `icon` key) | Inline SVG glyph per `weather-themes.js` `icon` key — no icon font, no CDN request |
 | `src/config/example-page.config.js` | No — reference only | Shows the config shape a page authors |
 | `demo/novasphere/integration.js` | No — copy the **pattern**, not the file | It's wired to NovaSphere's specific DOM ids/classes and i18n dictionary; your page needs its own thin version |
 | `demo/novasphere/app.js` (i18n dict) | No | Every page owns its own translations |
@@ -114,6 +116,11 @@ that matches what you're adding — you're almost never editing
   more granularity than the reduced set currently mapped there — extend that
   map first, then add the corresponding `codeKey` entry to
   `weather-themes.js`.
+- The widget's icon comes from `weather-themes.js`'s `icon` field, resolved
+  to an inline SVG by `getWeatherIconSvg()` in `weather-icons.js`. If you add
+  a `weather-themes.js` entry with a new `icon` value, add the matching SVG
+  key to `weather-icons.js` too — unrecognized keys fall back to a generic
+  `question` glyph rather than rendering nothing.
 
 ### B. New country-driven effect (e.g. currency formatting, a country-specific banner image)
 
@@ -129,12 +136,21 @@ that matches what you're adding — you're almost never editing
 ### C. New holiday or holiday-specific message
 
 - Add the date to the country's array in `holidays.js`: `{ month, day, i18nKey }`.
-- To show holiday-specific text (not just the generic "today is a holiday in
-  {country}" banner), add a translation for that exact `i18nKey` in your
-  page's i18n dictionary — `maybeShowHolidayBanner` already prefers the
-  specific key over the generic template when a translation exists (this was
-  fixed in Phase 4; NovaSphere itself doesn't define any specific holiday
-  text yet, so it always falls back to the generic banner today).
+  Reuse one of the existing `holiday_common_*` keys (new year, labour day,
+  assumption, all saints, christmas) when the holiday is genuinely shared
+  across countries — that's the lever that keeps the translation dictionary
+  from growing linearly with country count.
+- Holiday greetings are translated **once, for the whole project**, in
+  `src/config/holiday-i18n.js` (all 7 languages) — not per page. Add your new
+  `i18nKey` there and every page picks it up automatically.
+- Resolution order in each page's `maybeShowHolidayBanner` (fixed in Phase 4,
+  extended post-Phase-4 to add the shared dictionary): (1) the page's own
+  i18n dictionary, in case a specific page wants a custom message for a
+  holiday; (2) `holiday-i18n.js`'s shared translation; (3) the generic
+  "today is a holiday in {country}" template as a last-resort fallback if
+  somehow neither has the key. In practice, once you add a key to
+  `holiday-i18n.js`, every page (NovaSphere, Nayla, and any future site)
+  shows the specific message with zero page-level changes.
 
 ### D. A completely new profile dimension (not weather/country/holiday)
 
