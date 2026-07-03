@@ -1,0 +1,121 @@
+<!-- index.html — NovaSphere demo landing page (Phase 3 integration target) -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>NovaSphere - Modern SaaS Landing</title>
+  <link rel="stylesheet" href="styles.css?v=1.1.0">
+</head>
+<body>
+  <header class="site-header" aria-label="Main">
+    <div class="container header-inner">
+      <a href="#" class="logo" aria-label="NovaSphere logo">NovaSphere</a>
+      <nav class="main-nav" aria-label="Primary">
+        <a href="#features" data-i18n="nav_features">Features</a>
+        <a href="#pricing" data-i18n="nav_pricing">Pricing</a>
+        <a href="#cta" data-i18n="nav_cta">Get Started</a>
+      </nav>
+      <div class="lang-switch" aria-label="Language switcher">
+        <select id="langSelect" aria-label="Language">
+          <option value="en" selected>English</option>
+          <option value="es">Español</option>
+          <option value="fr">Français</option>
+        </select>
+      </div>
+    </div>
+  </header>
+  <main>
+    <section class="hero" id="home" aria-label="Hero">
+      <div class="container">
+        <h1 class="hero-content" data-i18n="hero_title">
+          The operating system for teams that move fast
+        </h1>
+        <p class="sub" data-i18n="hero_sub">
+          Plan, automate, and ship together — one workspace, no busywork.
+        </p>
+        <a href="#pricing" class="btn btn-primary" data-i18n="cta_primary" aria-label="Start Free Trial">Start free trial</a>
+        <p class="hero-note" data-i18n="hero_note">No credit card required · Cancel anytime</p>
+      </div>
+    </section>
+    <section id="features" class="features" aria-label="Features">
+      <div class="container">
+        <h2 class="section-title" data-i18n="features_title">Everything your team needs, in one place</h2>
+        <div class="features-grid" role="list">
+          <article class="feature" role="listitem">
+            <img src="./assets/images/image003.jpg" alt="" />
+            <h3 data-i18n="feature_1_title">Unified workspace</h3>
+            <p data-i18n="feature_1_desc">Tasks, chat, and roadmaps in one shared space — no more switching between five tools.</p>
+          </article>
+          <article class="feature" role="listitem">
+            <img src="./assets/images/image012.jpg" alt="" />
+            <h3 data-i18n="feature_2_title">Automation & AI assist</h3>
+            <p data-i18n="feature_2_desc">Smart workflows learn how your team works and take the repetitive tasks off your plate.</p>
+          </article>
+          <article class="feature" role="listitem">
+            <img src="./assets/images/image021.jpg" alt="" />
+            <h3 data-i18n="feature_3_title">Secure by design</h3>
+            <p data-i18n="feature_3_desc">SOC 2 and ISO-aligned controls with granular, role-based access — built in, not bolted on.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+    <section id="pricing" class="pricing" aria-label="Pricing">
+      <div class="container">
+        <h2 class="section-title" data-i18n="pricing_title">Simple pricing that scales with you</h2>
+        <p class="section-sub" data-i18n="pricing_sub">No surprise charges. Cancel anytime.</p>
+        <div class="pricing-grid" role="list">
+          <div class="card" role="listitem">
+            <h3 data-i18n="pricing_basic_title">Starter</h3>
+            <p class="price"><span>$</span>19<span>/mo</span></p>
+            <ul>
+              <li data-i18n="pricing_basic_feature1">Up to 5 users</li>
+              <li data-i18n="pricing_basic_feature2">Core features</li>
+              <li data-i18n="pricing_basic_feature3">Email support</li>
+            </ul>
+            <button class="btn" data-i18n="pricing_getstarted" aria-label="Get started with Starter">Get started</button>
+          </div>
+          <div class="card featured" role="listitem">
+            <p class="badge" data-i18n="pricing_pro_badge">Most popular</p>
+            <h3 data-i18n="pricing_pro_title">Pro</h3>
+            <p class="price"><span>$</span>39<span>/mo</span></p>
+            <ul>
+              <li data-i18n="pricing_pro_feature1">Everything in Starter</li>
+              <li data-i18n="pricing_pro_feature2">Advanced automation</li>
+              <li data-i18n="pricing_pro_feature3">Priority support</li>
+            </ul>
+            <button class="btn btn-ghost" data-i18n="pricing_getstarted" aria-label="Get started with Pro">Get started</button>
+          </div>
+          <div class="card" role="listitem">
+            <h3 data-i18n="pricing_enterprise_title">Enterprise</h3>
+            <p class="price" data-i18n="pricing_enterprise_price">Custom pricing</p>
+            <ul>
+              <li data-i18n="pricing_enterprise_feature1">Unlimited users</li>
+              <li data-i18n="pricing_enterprise_feature2">Dedicated success manager</li>
+              <li data-i18n="pricing_enterprise_feature3">SSO & custom contracts</li>
+              <li data-i18n="pricing_enterprise_feature4">24/7 priority support</li>
+            </ul>
+            <button class="btn" data-i18n="pricing_contact" aria-label="Contact Sales">Contact sales</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer class="site-footer" aria-label="Footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <span class="logo" aria-label="NovaSphere logo">NovaSphere</span>
+        <p data-i18n="footer_tagline">The operating system for teams that move fast.</p>
+      </div>
+      <nav class="footer-links" aria-label="Footer links">
+        <a href="#pricing" data-i18n="footer_link_pricing">Pricing</a>
+        <a href="#" data-i18n="footer_link_privacy">Privacy</a>
+        <a href="#" data-i18n="footer_link_terms">Terms</a>
+        <a href="#" data-i18n="footer_link_contact">Contact</a>
+      </nav>
+      <p class="footer-copy">&copy; <span data-i18n="year"></span> NovaSphere. <span data-i18n="footer_rights">All rights reserved.</span></p>
+    </div>
+  </footer>
+  <script src="app.js?v=1.1.0"></script>
+</body>
+</html>

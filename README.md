@@ -78,6 +78,11 @@ rewrite of the detection/geolocation/weather/holiday logic.
 ## Repository structure
 
 ```
+demo/
+  novasphere/
+    index.html              # NovaSphere demo landing page — Phase 3 integration target
+    styles.css               # polished copy/layout pass over the original draft
+    app.js                   # i18n scaffold (en/es/fr), still a manual language switcher
 src/
   core/
     context-engine.js       # visitor context collection + consent + storage (Phase 1)
@@ -89,3 +94,15 @@ src/
 docs/
   ARCHITECTURE.md            # design notes for the core/per-page split
 ```
+
+### NovaSphere demo — draft polish pass
+
+`demo/novasphere/` refines the original feasibility-test draft ahead of Phase 3
+wiring: sharper hero/feature copy, a fleshed-out Enterprise pricing tier
+(unlimited users, SSO, dedicated success manager — matching the other cards'
+style, and fixing a bug where the draft's `data-i18n` attribute sat on the
+whole card instead of its title), a "Most popular" badge on Pro, a credible
+minimal footer (tagline + Pricing/Privacy/Terms/Contact links + copyright),
+and a completed French dictionary (the draft's language switcher offered
+French but had no translations for it). Structure and visual identity are
+unchanged from the draft — this is a copy/layout pass, not a rebuild.
