@@ -161,7 +161,72 @@ that matches what you're adding — you're almost never editing
   `holiday-i18n.js`, every page (NovaSphere, Nayla, and any future site)
   shows the specific message with zero page-level changes.
 
-### D. A completely new profile dimension (not weather/country/holiday)
+### D. Time-of-day driven effect (e.g. add/remove a class for morning vs. afternoon)
+
+The profile doesn't carry a ready-made "morning/afternoon" flag — derive it
+from the visitor's **local** hour, the same way `maybeShowHolidayBanner`
+derives the visitor's local date (see point 4 in Section 3). Never use the
+server/browser's own `new Date().getHours()` directly — that's your clock,
+not the visitor's, and will misfire for anyone not in your timezone.
+
+```js
+function getLocalHour(profile) {
+  const tz = profile.weather?.timezone || profile.timezone;
+  const opts = { hour: 'numeric', hourCycle: 'h23' };
+  if (tz) opts.timeZone = tz;
+  return Number(new Intl.DateTimeFormat('en-US', opts).format(new Date()));
+}
+
+function applyTimeOfDayClass(profile) {
+  const hour = getLocalHour(profile);
+  const isMorning = hour >= 5 && hour < 12; // pick your own boundaries
+  document.body.classList.toggle('is-morning', isMorning);
+  document.body.classList.toggle('is-afternoon', !isMorning);
+}
+```
+
+Call `applyTimeOfDayClass(profile)` once inside your integration script's
+main flow, right where `renderWidget(profile)` / `maybeShowHolidayBanner`
+already run (they all need the same built `profile` object). Style the
+classes in your page's CSS (`.is-morning .hero { ... }`) — don't put
+time-of-day logic in `weather-themes.js`, it's an orthogonal dimension, not a
+weather one.
+
+If you want more than two buckets (morning/afternoon/evening/night), branch
+on the same `hour` value with additional `if`/`else` instead of a boolean —
+the pattern is the same, just more branches.
+
+### E. Weather-driven show/hide of an element (e.g. show a div only when cloudy)
+
+Same principle as 4A's hero-image swap, applied to visibility instead of a
+`src` attribute. Branch on `profile.weather.codeKey` — never the raw numeric
+`code` — and toggle a CSS class or the `hidden` attribute:
+
+```js
+function applyCloudyBanner(profile) {
+  const cloudyBanner = document.getElementById('cloudyPromo');
+  if (!cloudyBanner) return;
+  const isCloudy = ['cloudy', 'fog', 'fog_rime'].includes(profile.weather?.codeKey);
+  cloudyBanner.hidden = !isCloudy;
+}
+```
+
+Check the `WEATHER_CODES` map in `context-engine.js` for the exact `codeKey`
+values available — currently `clear`, `mostly_clear`, `partly_cloudy`,
+`cloudy`, `fog`, `fog_rime`, `drizzle_light/moderate/dense`,
+`freezing_drizzle_light/dense`, `rain_light/moderate/heavy`,
+`freezing_rain_light/heavy`, `snow_light/moderate/heavy`, `snow_grains`,
+`rain_showers_light/moderate/violent`, `snow_showers_light/heavy`,
+`thunderstorm`, `thunderstorm_hail_light/heavy` (no `unknown` value exists in
+the map itself — `unknown` is the runtime fallback in `detectWeather()` when
+Open-Meteo returns a code not in this table). Group several into one boolean
+condition like the example above if your effect only cares about a broader
+bucket (any kind of "grey sky" vs. "sunny", for instance). If
+`profile.weather` is `null` (visitor denied consent, or weather lookup
+failed), the effect should stay hidden by default — the `?.` above already
+handles that safely.
+
+### F. A completely new profile dimension (not weather/country/holiday)
 
 - Extend `buildProfile()` in `context-engine.js` to add the new field to the
   normalized profile object (keep the existing fields — don't rename/remove
